@@ -5,20 +5,14 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.motion.widget.Debug;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -26,25 +20,34 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.charmingplaces.POJO.Photo;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 import java.util.Locale;
 
 public class CapturePlace extends AppCompatActivity {
-    private static final int PERMISION_CODE = 1234;
-    private static final int CAPTURE_CODE = 1001;
+    private static final int PERMISION_CODE = 1234;;
+    private final static int REQUEST_CODE = 100;
     FusedLocationProviderClient fusedLocationProviderClient;
     TextView gps;
     TextView pais;
@@ -52,8 +55,8 @@ public class CapturePlace extends AppCompatActivity {
     TextView latitud;
     TextView longuitud;
     Button play;
+    Button send;
     ImageView foto;
-    private final static int REQUEST_CODE = 100;
     String address, country, city;
     double latitude, longuitude;
     Bitmap fotoBitmap;
@@ -70,6 +73,7 @@ public class CapturePlace extends AppCompatActivity {
         latitud = findViewById(R.id.txtLatitud);
         longuitud = findViewById(R.id.txtLonguitud);
         play = findViewById(R.id.btnPlay);
+        send = findViewById(R.id.btnSend);
         foto = findViewById(R.id.imgCamara);
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
@@ -86,9 +90,59 @@ public class CapturePlace extends AppCompatActivity {
 
         });
 
+        send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                JSONObject datos = buildRequestData();
+                crearPuntoDeInteres(datos);
+                //test();
+            }
+        });
 
     }
 
+    /**
+     * Recopila la información necesaria para ser enviada al controller de crear entrada
+     *
+     * @return objeto con los datos a añadir
+     */
+    public JSONObject buildRequestData() {
+        //esto lo usaré para convertir mi objeto java en JSON para enviarlo al micro
+        Gson jsonParser = new Gson();
+
+        Photo photo = new Photo();
+        byte[] imagen = bitmapToByteArray(fotoBitmap);
+        photo.setImage(imagen);
+        photo.setXcoord(longuitude);
+        photo.setXcoord(latitude);
+
+        String json = jsonParser.toJson(photo);
+        try {
+            return new JSONObject(json);
+        } catch (JSONException e) {
+            return null;
+        }
+    }
+
+    public void crearPuntoDeInteres(JSONObject request) {
+        String url = "http://192.168.1.104:8080/lugares/img";
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, request,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError e) {
+                        Log.d("PETARDAZO", "Error al conectar con lugaresconencanto.com", e);
+                    }
+                });
+
+        // Esto añade la request que enviamos hacia el controller a una cola de peticiones y la manda cuando tenga disponibilidad
+        RequestQueue.getInstance(this).addToRequestQueue(jsonObjectRequest);
+    }
 
     ActivityResultLauncher<Intent> camaraLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
@@ -97,6 +151,8 @@ public class CapturePlace extends AppCompatActivity {
                 Bundle extras = result.getData().getExtras();
                 fotoBitmap = (Bitmap) extras.get("data");
                 foto.setImageBitmap(fotoBitmap);
+
+
             }
         }
     });
