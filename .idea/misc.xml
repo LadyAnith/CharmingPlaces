@@ -3,9 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Anith/AndroidStudioProjects/CharmingPlaces/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.168" />
+        <entry key="..\:/Users/Anith/AndroidStudioProjects/CharmingPlaces/app/src/main/res/drawable/ic_baseline_image_24.xml" value="0.168" />
+        <entry key="..\:/Users/Anith/AndroidStudioProjects/CharmingPlaces/app/src/main/res/drawable/ic_launcher_background.xml" value="0.168" />
         <entry key="..\:/Users/Anith/AndroidStudioProjects/CharmingPlaces/app/src/main/res/layout/activity_capture_place.xml" value="0.2" />
         <entry key="..\:/Users/Anith/AndroidStudioProjects/CharmingPlaces/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Users/Anith/AndroidStudioProjects/CharmingPlaces/app/src/main/res/layout/activity_main2.xml" value="0.25" />
+        <entry key="..\:/Users/Anith/AndroidStudioProjects/CharmingPlaces/app/src/main/res/layout/activity_register.xml" value="0.25" />
+        <entry key="..\:/Users/Anith/AndroidStudioProjects/CharmingPlaces/app/src/main/res/layout/content_charming_place.xml" value="0.24682971014492755" />
       </map>
     </option>
   </component>
