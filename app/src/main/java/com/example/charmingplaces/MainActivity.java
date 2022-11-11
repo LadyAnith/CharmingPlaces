@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Con el evento onClick, llamo a la actividad del juego
-                Intent i = new Intent(getApplicationContext(), CapturePlace.class);
+                Intent i = new Intent(getApplicationContext(), MenuActivity.class);
                 startActivity(i);
 
             }

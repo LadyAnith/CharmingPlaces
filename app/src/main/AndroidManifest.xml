@@ -19,10 +19,8 @@
         android:theme="@style/Theme.CharmingPlaces"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".CharmingPlaceActivity"
-            android:exported="false"
-            android:label="@string/title_activity_charming_place"
-            android:theme="@style/Theme.CharmingPlaces.NoActionBar" />
+            android:name=".MenuActivity"
+            android:exported="false" />
         <activity
             android:name=".RegisterActivity"
             android:exported="false" />
