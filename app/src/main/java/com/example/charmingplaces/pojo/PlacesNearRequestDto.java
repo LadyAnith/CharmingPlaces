@@ -1,17 +1,20 @@
-package com.example.charmingplaces.POJO;
+package com.example.charmingplaces.pojo;
 
-public class Photo {
+public class PlacesNearRequestDto {
     private double xcoord;
     private double ycoord;
-    private byte[] image;
 
-    public Photo() {
-    }
-
-    public Photo(double xcoord, double ycoord, byte[] image) {
+    public PlacesNearRequestDto(double xcoord, double ycoord) {
         this.xcoord = xcoord;
         this.ycoord = ycoord;
-        this.image = image;
+    }
+
+    public PlacesNearRequestDto() {
+    }
+
+    public PlacesNearRequestDto(GpsLocation gpsLocation) {
+        this.xcoord = gpsLocation.getLonguitude();
+        this.ycoord = gpsLocation.getLatitude();
     }
 
     public double getXcoord() {
@@ -28,13 +31,5 @@ public class Photo {
 
     public void setYcoord(double ycoord) {
         this.ycoord = ycoord;
-    }
-
-    public byte[] getImage() {
-        return image;
-    }
-
-    public void setImage(byte[] image) {
-        this.image = image;
     }
 }
