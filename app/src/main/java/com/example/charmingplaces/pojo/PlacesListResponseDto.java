@@ -3,7 +3,7 @@ package com.example.charmingplaces.pojo;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlacesNearResponseDto {
+public class PlacesListResponseDto {
 
     List<PlacesDto> data = new ArrayList<>();
 

@@ -7,8 +7,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.charmingplaces.pojo.PhotoCreatePlaceRequestDto;
+import com.example.charmingplaces.pojo.PlacesInsideAreaRequestDto;
 import com.example.charmingplaces.pojo.PlacesNearRequestDto;
-import com.example.charmingplaces.pojo.PlacesNearResponseDto;
+import com.example.charmingplaces.pojo.PlacesListResponseDto;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -16,8 +17,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
 
 public class CharmingPlacesApi {
 
@@ -30,6 +29,7 @@ public class CharmingPlacesApi {
     private static final String URL_BASE = "http://192.168.1.104:8080/lugares";
     private static final String CREATE_PLACE_ENDPOINT = "/img";
     private static final String GET_PLACES_NEAR_ENDPOINT = "/findNear?xcoord=%s&ycoord=%s";
+    private static final String GET_PLACES_AREA_ENDPOINT = "/placesInsideArea";
 
     /**
      * Crea un punto de interés en el sistema enviando los datos del punto de interés por REST al microservicio spring
@@ -40,6 +40,7 @@ public class CharmingPlacesApi {
      */
     public void createInterestingPoint(PhotoCreatePlaceRequestDto data, Response.Listener<PhotoCreatePlaceRequestDto> successCallback, Response.ErrorListener errorCallback) {
         String url = URL_BASE + CREATE_PLACE_ENDPOINT;
+        //Convierto el objeto PhotoCreatePlaceRequestDto a formato JSON
         JSONObject request = objectToJSON(data);
 
         //Indicamos el tipo de respuesta para convertir desde el micro a un objeto que podamos manejar
@@ -64,12 +65,12 @@ public class CharmingPlacesApi {
      * @param successCallback qué función ejecutar si va OK
      * @param errorCallback qué función ejecutar si hay un error al insertar el lugar de interés
      */
-    public void findInterestingPoint(PlacesNearRequestDto data, Response.Listener<PlacesNearResponseDto> successCallback, Response.ErrorListener errorCallback) {
+    public void findNearInterestingPoint(PlacesNearRequestDto data, Response.Listener<PlacesListResponseDto> successCallback, Response.ErrorListener errorCallback) {
         String urlBase = URL_BASE + GET_PLACES_NEAR_ENDPOINT;
-        String url = String.format(urlBase, data.getXcoord(), data.getYcoord());
+        String url = String.format(urlBase, data.getGeoPoint().getXcoord(), data.getGeoPoint().getYcoord());
 
         //Indicamos el tipo de respuesta para convertir desde el micro a un objeto que podamos manejar
-        Type typeList = new TypeToken<PlacesNearResponseDto>() {}.getType();
+        Type typeList = new TypeToken<PlacesListResponseDto>() {}.getType();
 
         //Construimos un listener que ejecutará lo que indiquemos como parámetro tras convertir nuestro JSON a Objeto java
         Response.Listener<JSONObject> success = result -> {
@@ -78,6 +79,26 @@ public class CharmingPlacesApi {
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 url,
+                success,
+                errorCallback);
+
+        // Esto añade la request que enviamos hacia el controller a una cola de peticiones y la manda cuando tenga disponibilidad
+        RequestQueue.getInstance(context).addToRequestQueue(jsonObjectRequest);
+    }
+
+    public void findPlacesInsideArea(PlacesInsideAreaRequestDto data, Response.Listener<PlacesListResponseDto> successCallback, Response.ErrorListener errorCallback) {
+        String url = URL_BASE + GET_PLACES_AREA_ENDPOINT;
+        //Convierto el objeto PlacesInsideAreaRequestDto a formato JSON
+        JSONObject request = objectToJSON(data);
+
+        //Indicamos el tipo de respuesta para convertir desde el micro a un objeto que podamos manejar
+        Type typeList = new TypeToken<PlacesListResponseDto>() {}.getType();
+        Response.Listener<JSONObject> success = (result -> successCallback.onResponse(jsonToObject(result, typeList)));
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.POST,
+                url,
+                request,
                 success,
                 errorCallback);
 

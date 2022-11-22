@@ -5,13 +5,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.example.charmingplaces.R;
+import com.example.charmingplaces.client.CharmingPlacesApi;
+import com.example.charmingplaces.pojo.GeoPoint;
+import com.example.charmingplaces.pojo.PlacesInsideAreaRequestDto;
+import com.example.charmingplaces.pojo.PlacesNearRequestDto;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
-    private GoogleMap mMap;
+
+    private Button btnCentrar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +27,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_map);
         Fragment fragment = new MapFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.frameMap, fragment).commit();
+        btnCentrar = findViewById(R.id.btnCentrar);
+        btnCentrar.setOnClickListener(v -> {
+            MapFragment.gmap.findNearMarkersFromUser();
+        });
     }
 
     @Override

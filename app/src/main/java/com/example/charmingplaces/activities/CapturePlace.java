@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,7 +30,7 @@ import java.io.ByteArrayOutputStream;
 
 public class CapturePlace extends AppCompatActivity {
     private static final int REQUEST_CODE_CAMERA = 1234;
-    ;
+
     private final static int REQUEST_CODE_GPS = 100;
 
     TextView ubicacion;
@@ -37,6 +38,7 @@ public class CapturePlace extends AppCompatActivity {
     TextView ciudad;
     TextView latitud;
     TextView longuitud;
+    EditText nombre;
 
     Button play;
     Button send;
@@ -65,17 +67,31 @@ public class CapturePlace extends AppCompatActivity {
         play = findViewById(R.id.btnPlay);
         send = findViewById(R.id.btnSend);
         foto = findViewById(R.id.imgCamara);
+        nombre = findViewById(R.id.txtNamePlace);
 
         gps = new Gps(this);
         placesApi = new CharmingPlacesApi(this);
 
         play.setOnClickListener(evento -> {
+            play.setError(null);
             gps.getLocation(response -> gpsLocationCallback(response));
             pedirPermisosCamara();
 
         });
 
         send.setOnClickListener(evento -> {
+            play.setError(null);
+            String resultadoNombre = nombre.getText().toString();
+            if(resultadoNombre.isEmpty()){
+                nombre.setError("El nombre no puede ir vacío");
+                return;
+            }
+            if(fotoBitmap == null) {
+                play.setError("Se debe realizar una foto");
+                Toast.makeText(this, "Debes de tomar una foto", Toast.LENGTH_LONG);
+                return;
+            }
+
             PhotoCreatePlaceRequestDto photo = buildRequestData();
             placesApi.createInterestingPoint(photo,
                     responseSuccess -> Log.d("DEBUG", "Va todo OKey: " + responseSuccess),
@@ -98,8 +114,7 @@ public class CapturePlace extends AppCompatActivity {
                 .setImage(imagen)
                 .setXcoord(gpsLocation.getLonguitude())
                 .setXcoord(gpsLocation.getLatitude())
-                //TODO cambiar esto por un input de texto con el nombre del lugar de interés
-                .setName(gpsLocation.getAddress())
+                .setName(nombre.getText().toString())
                 .setCity(gpsLocation.getCity())
                 .setAddress(gpsLocation.getAddress());
         return photo;
