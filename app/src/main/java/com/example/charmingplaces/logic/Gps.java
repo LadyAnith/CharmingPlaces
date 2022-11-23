@@ -56,6 +56,10 @@ public class Gps {
                                             .setLatitude(addresses.get(0).getLatitude())
                                             .setLonguitude(addresses.get(0).getLongitude());
 
+
+                                    //TODO BORRAR ESTA TRAMPA
+                                    gpsLocation.setLatitude(39.64663975887039).setLonguitude(-4.275421116794311);
+
                                     callback.execute(gpsLocation);
 
                                 } catch (IOException e) {

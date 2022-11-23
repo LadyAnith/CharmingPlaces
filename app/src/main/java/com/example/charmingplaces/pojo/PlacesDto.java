@@ -4,14 +4,16 @@ public class PlacesDto {
 
     private String id;
     private String name;
+    private String url;
     private double xcoord;
     private double ycoord;
 
-    public PlacesDto(String id, String name, double xcoord, double ycoord) {
+    public PlacesDto(String id, String name, double xcoord, double ycoord, String url) {
         this.id = id;
         this.name = name;
         this.xcoord = xcoord;
         this.ycoord = ycoord;
+        this.url = url;
     }
 
     public PlacesDto() {
@@ -49,4 +51,11 @@ public class PlacesDto {
         this.ycoord = ycoord;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 }

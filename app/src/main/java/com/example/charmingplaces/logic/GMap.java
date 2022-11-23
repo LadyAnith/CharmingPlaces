@@ -1,10 +1,15 @@
 package com.example.charmingplaces.logic;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.text.util.Linkify;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -62,7 +67,10 @@ public class GMap {
             PlacesDto placesDto = markersMap.get(eventMarker);
 
             ((TextView) this.popupView.findViewById(R.id.txtName)).setText(placesDto.getName());
-            popupWindow.showAtLocation(new View(activity), Gravity.CENTER,0,0);
+            setImage(this.popupView.findViewById(R.id.imgBBDD), placesDto.getUrl());
+            setDirections(this.popupView.findViewById(R.id.txtUrl), placesDto);
+
+            popupWindow.showAtLocation(new View(activity), Gravity.CENTER, 0, 0);
 
             isMarkerClicked = true;
             return false;
@@ -76,10 +84,28 @@ public class GMap {
         });
     }
 
+    private void setImage(ImageView imageView, String encodedImage) {
+
+        byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        imageView.setImageBitmap(decodedByte);
+
+    }
+
+    private void setDirections(TextView link, PlacesDto placeData) {
+        gps.getLocation(gpsLocation -> {
+            String template = "COMO LLEGAR: https://www.google.es/maps/dir/%s,%s/%s,%s";
+            String uri = String.format(template, placeData.getYcoord(), placeData.getXcoord(), gpsLocation.getLatitude(), gpsLocation.getLonguitude());
+            link.setText(uri);
+            Linkify.addLinks(link, Linkify.WEB_URLS);
+        });
+
+
+    }
+
+
     public void findNearMarkersFromUser() {
         gps.getLocation(gpsLocation -> {
-
-            gpsLocation.setLatitude(39.8581000).setLonguitude(-4.0227700);
 
             gmapInstance.clear();
             gmapInstance.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(gpsLocation.getLatitude(), gpsLocation.getLonguitude()), 15));
@@ -133,6 +159,4 @@ public class GMap {
                 .title(title));
 
     }
-
-
 }
