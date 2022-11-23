@@ -27,6 +27,7 @@ public class MapFragment extends Fragment {
 
     public static GMap gmap;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -38,12 +39,8 @@ public class MapFragment extends Fragment {
             @Override
             public void onMapReady(@NonNull GoogleMap googleMap) {
 
-                gmap = new GMap(googleMap, new CharmingPlacesApi(getContext()), new Gps(getActivity()));
-
-                gmap.getInstance().setOnCameraIdleListener(() -> gmap.findAreaMarkers());
-
+                gmap = new GMap(googleMap, getActivity());
                 gmap.findNearMarkersFromUser();
-
             }
         });
 

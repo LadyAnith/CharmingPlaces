@@ -59,14 +59,14 @@ public class CapturePlace extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_capture_place);
 
-        ubicacion = findViewById(R.id.txtUbicacion);
+        ubicacion = findViewById(R.id.txtName);
         pais = findViewById(R.id.txtPais);
-        ciudad = findViewById(R.id.txtCiudad);
+        ciudad = findViewById(R.id.txtUrl);
         latitud = findViewById(R.id.txtLatitud);
         longuitud = findViewById(R.id.txtLonguitud);
         play = findViewById(R.id.btnPlay);
         send = findViewById(R.id.btnSend);
-        foto = findViewById(R.id.imgCamara);
+        foto = findViewById(R.id.imgBBDD);
         nombre = findViewById(R.id.txtNamePlace);
 
         gps = new Gps(this);

@@ -1,39 +1,80 @@
 package com.example.charmingplaces.logic;
 
+import android.app.Activity;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
-import com.example.charmingplaces.activities.MapFragment;
+import com.example.charmingplaces.R;
 import com.example.charmingplaces.client.CharmingPlacesApi;
 import com.example.charmingplaces.pojo.GeoPoint;
+import com.example.charmingplaces.pojo.PlacesDto;
 import com.example.charmingplaces.pojo.PlacesInsideAreaRequestDto;
-import com.example.charmingplaces.pojo.PlacesListResponseDto;
 import com.example.charmingplaces.pojo.PlacesNearRequestDto;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class GMap {
     private GoogleMap gmapInstance;
     private Gps gps;
     private CharmingPlacesApi charmingPlacesApi;
+    private boolean isMarkerClicked = false;
+    private Map<Marker, PlacesDto> markersMap = new HashMap<>();
+
+    private PopupWindow popupWindow;
+    private View popupView;
 
     public GoogleMap getInstance() {
         return gmapInstance;
     }
 
-    public GMap(GoogleMap googleMap, CharmingPlacesApi charmingPlacesApi, Gps gps) {
+    public GMap(GoogleMap googleMap, Activity activity) {
         this.gmapInstance = googleMap;
-        this.gps = gps;
-        this.charmingPlacesApi = charmingPlacesApi;
+        this.gps = new Gps(activity);
+        this.charmingPlacesApi = new CharmingPlacesApi(activity);
+        this.popupView = LayoutInflater.from(activity).inflate(R.layout.place_info_window_popup, null, false);
+        popupWindow = new PopupWindow(popupView, 1000, 1500, false);
+
 
         gmapInstance.clear();
         gmapInstance.getUiSettings().setZoomControlsEnabled(true);
         gmapInstance.getUiSettings().setScrollGesturesEnabledDuringRotateOrZoom(false);
         gmapInstance.getUiSettings().setRotateGesturesEnabled(false);
+        gmapInstance.setOnCameraIdleListener(() -> {
+            if (!isMarkerClicked) {
+                findAreaMarkers();
+            }
 
+            isMarkerClicked = false;
+        });
+        gmapInstance.setOnMarkerClickListener(eventMarker -> {
+            Log.d("INFO", eventMarker.getTitle());
+
+            PlacesDto placesDto = markersMap.get(eventMarker);
+
+            ((TextView) this.popupView.findViewById(R.id.txtName)).setText(placesDto.getName());
+            popupWindow.showAtLocation(new View(activity), Gravity.CENTER,0,0);
+
+            isMarkerClicked = true;
+            return false;
+        });
+
+        popupView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
     }
-
 
     public void findNearMarkersFromUser() {
         gps.getLocation(gpsLocation -> {
@@ -47,7 +88,7 @@ public class GMap {
 
             charmingPlacesApi.findNearInterestingPoint(placesNearRequestDto,
                     response -> {
-                        for (PlacesListResponseDto.PlacesDto responseDto : response.getData()) {
+                        for (PlacesDto responseDto : response.getData()) {
                             addMarker(responseDto);
                         }
                     },
@@ -69,26 +110,29 @@ public class GMap {
 
         charmingPlacesApi.findPlacesInsideArea(placesInsideAreaRequestDto,
                 response -> {
-                    for (PlacesListResponseDto.PlacesDto placesDto:response.getData()) {
+                    for (PlacesDto placesDto : response.getData()) {
                         addMarker(placesDto);
                     }
                 },
                 error -> Log.d("ERROR", "Error al recibir los lugares", error));
     }
 
-    private void addMarker(PlacesListResponseDto.PlacesDto responseDto) {
-        addMarker(responseDto.getYcoord(), responseDto.getXcoord(), responseDto.getName());
+    private void addMarker(PlacesDto responseDto) {
+        Marker m = addMarker(responseDto.getYcoord(), responseDto.getXcoord(), responseDto.getName());
+        markersMap.put(m, responseDto);
     }
 
     private void addMarker(GeoPoint geoPoint) {
         gmapInstance.addMarker(new MarkerOptions()
-                        .position(new LatLng(geoPoint.getYcoord(), geoPoint.getXcoord())));
+                .position(new LatLng(geoPoint.getYcoord(), geoPoint.getXcoord())));
     }
 
-    private void addMarker(double lat, double lon, String titulo) {
-        gmapInstance.addMarker(new MarkerOptions()
+    private Marker addMarker(double lat, double lon, String title) {
+        return gmapInstance.addMarker(new MarkerOptions()
                 .position(new LatLng(lat, lon))
-                .title(titulo));
+                .title(title));
+
     }
+
 
 }
