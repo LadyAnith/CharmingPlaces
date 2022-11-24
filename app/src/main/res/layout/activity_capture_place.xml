@@ -83,7 +83,7 @@
         android:id="@+id/imgBBDD"
         android:layout_width="290dp"
         android:layout_height="289dp"
-        android:src="@drawable/ic_baseline_image_24"
+        android:src="@drawable/picture"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"

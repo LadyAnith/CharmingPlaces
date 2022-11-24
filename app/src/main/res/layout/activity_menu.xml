@@ -58,7 +58,7 @@
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.456">
+        app:layout_constraintVertical_bias="0.499">
 
         <ImageView
             android:id="@+id/imageView8"
@@ -93,10 +93,9 @@
         android:background="@drawable/background_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnMap"
-        app:layout_constraintVertical_bias="0.129">
+        app:layout_constraintVertical_bias="0.015">
 
         <ImageView
             android:id="@+id/imageView7"
@@ -133,7 +132,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnListPlaces"
-        app:layout_constraintVertical_bias="0.55">
+        app:layout_constraintVertical_bias="0.493">
 
         <ImageView
             android:id="@+id/imageView6"

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "698757924812",
+    "project_id": "charming-places",
+    "storage_bucket": "charming-places.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:698757924812:android:16f82c43d40637432b7f69",
+        "android_client_info": {
+          "package_name": "com.example.charmingplaces"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "698757924812-lv1a63jo6sn6dn8mppp2car6kqi539b4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.charmingplaces",
+            "certificate_hash": "b43e56c50e1f42d6bcb3cbed14472e701733bfcb"
+          }
+        },
+        {
+          "client_id": "698757924812-kdku09to6flei7scms3qfes0iaerlqe0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-s095Gm_z0Hkha_vIVHxnLONAolxs2Qw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "698757924812-kdku09to6flei7scms3qfes0iaerlqe0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
