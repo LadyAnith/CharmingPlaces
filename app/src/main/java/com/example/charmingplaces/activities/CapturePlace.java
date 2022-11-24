@@ -9,7 +9,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -46,7 +45,6 @@ public class CapturePlace extends AppCompatActivity {
     ImageView foto;
 
     Bitmap fotoBitmap;
-    Uri imageUri;
 
     private GpsLocation gpsLocation;
 
@@ -74,7 +72,7 @@ public class CapturePlace extends AppCompatActivity {
 
         play.setOnClickListener(evento -> {
             play.setError(null);
-            gps.getLocation(response -> gpsLocationCallback(response));
+            gps.getLocation(this::gpsLocationCallback);
             pedirPermisosCamara();
 
         });
@@ -110,14 +108,13 @@ public class CapturePlace extends AppCompatActivity {
     public PhotoCreatePlaceRequestDto buildRequestData() {
 
         byte[] imagen = bitmapToByteArray(fotoBitmap);
-        PhotoCreatePlaceRequestDto photo = new PhotoCreatePlaceRequestDto()
+        return new PhotoCreatePlaceRequestDto()
                 .setImage(imagen)
                 .setXcoord(gpsLocation.getLonguitude())
                 .setXcoord(gpsLocation.getLatitude())
                 .setName(nombre.getText().toString())
                 .setCity(gpsLocation.getCity())
                 .setAddress(gpsLocation.getAddress());
-        return photo;
     }
 
     ActivityResultLauncher<Intent> camaraLauncher = registerForActivityResult(
@@ -142,18 +139,8 @@ public class CapturePlace extends AppCompatActivity {
         //guardamos la info de la foto con compresión JPEG y calidad del 100% para no perder más calidad de imagen
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
         //reconvertimos el outputstream a su cadena de bytes
-        byte[] byteArray = stream.toByteArray();
-        return byteArray;
+        return stream.toByteArray();
     }
-
-    //Método que se encarga de activar la cámara
-    private void camara() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(intent, 1);
-        }
-    }
-
 
     private void pedirPermisosCamara() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -173,19 +160,6 @@ public class CapturePlace extends AppCompatActivity {
             camaraLauncher.launch(new Intent(MediaStore.ACTION_IMAGE_CAPTURE));
         }
     }
-/*
-    private void abrirCamara() {
-        ContentValues values = new ContentValues();
-        values.put(MediaStore.Images.Media.TITLE, "new image");
-        values.put(MediaStore.Images.Media.DESCRIPTION, "From the Camera");
-        imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,values);
-
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-        startActivityForResult(intent, CAPTURE_CODE);
-    }
-
- */
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

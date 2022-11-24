@@ -12,6 +12,7 @@ import com.example.charmingplaces.R;
 public class MenuActivity extends AppCompatActivity {
     ConstraintLayout btnCapture;
     ConstraintLayout btnMap;
+    ConstraintLayout btnListPlaces;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,5 +40,13 @@ public class MenuActivity extends AppCompatActivity {
 
         });
 
+        btnListPlaces = findViewById(R.id.btnListPlaces);
+        btnListPlaces.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), PlacesListActivity.class);
+                startActivity(i);
+            }
+        });
     }
 }

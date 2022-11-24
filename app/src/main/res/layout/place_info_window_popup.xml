@@ -10,7 +10,7 @@
         android:layout_width="400dp"
         android:layout_height="411dp"
         android:layout_marginTop="16dp"
-        android:backgroundTint="#FFEB3B"
+        android:backgroundTint="#E1B067"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="13dp">
 
@@ -30,15 +30,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
                 android:text="Nombre Imagen"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/txtUrl"
+            <Button
+                android:id="@+id/btnLlegar"
                 android:layout_width="match_parent"
-                android:layout_height="32dp"
-                android:layout_marginTop="40dp"
-                android:text="Url o lo que sea"
-                android:textAlignment="center" />
+                android:layout_height="wrap_content"
+                android:text="Como LLegar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+
+            <!-- <TextView
+                 android:id="@+id/txtUrl"
+                 android:layout_width="match_parent"
+                 android:layout_height="32dp"
+                 android:layout_marginTop="40dp"
+                 android:text="Url o lo que sea"
+                 android:textAlignment="center"
+                 android:textSize="20sp" />
+                 -->
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

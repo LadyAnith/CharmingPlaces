@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.charmingplaces">
+
     <!-- Permisos para optener la ubicación del dispositivo -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- Permisos para acceder a la cámara -->
@@ -18,6 +19,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CharmingPlaces"
         android:usesCleartextTraffic="true">
+        <meta-data
+            android:name="com.google.android.actions"
+            android:resource="@xml/network_secutiry_config" />
+
+        <activity
+            android:name=".activities.PlacesListActivity"
+            android:exported="false" />
         <activity
             android:name=".activities.MapActivity"
             android:exported="false" />

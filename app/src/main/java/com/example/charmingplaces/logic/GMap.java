@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -68,7 +69,7 @@ public class GMap {
 
             ((TextView) this.popupView.findViewById(R.id.txtName)).setText(placesDto.getName());
             setImage(this.popupView.findViewById(R.id.imgBBDD), placesDto.getUrl());
-            setDirections(this.popupView.findViewById(R.id.txtUrl), placesDto);
+            setDirections(this.popupView.findViewById(R.id.btnLlegar), placesDto);
 
             popupWindow.showAtLocation(new View(activity), Gravity.CENTER, 0, 0);
 
@@ -92,12 +93,18 @@ public class GMap {
 
     }
 
-    private void setDirections(TextView link, PlacesDto placeData) {
-        gps.getLocation(gpsLocation -> {
-            String template = "COMO LLEGAR: https://www.google.es/maps/dir/%s,%s/%s,%s";
-            String uri = String.format(template, placeData.getYcoord(), placeData.getXcoord(), gpsLocation.getLatitude(), gpsLocation.getLonguitude());
-            link.setText(uri);
-            Linkify.addLinks(link, Linkify.WEB_URLS);
+    private void setDirections(Button link, PlacesDto placeData) {
+        link.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gps.getLocation(gpsLocation -> {
+                    String template = "https://www.google.es/maps/dir/%s,%s/%s,%s";
+                    String uri = String.format(template, placeData.getYcoord(), placeData.getXcoord(), gpsLocation.getLatitude(), gpsLocation.getLonguitude());
+                    link.setText(uri);
+                    Linkify.addLinks(link, Linkify.WEB_URLS);
+                });
+
+            }
         });
 
 
