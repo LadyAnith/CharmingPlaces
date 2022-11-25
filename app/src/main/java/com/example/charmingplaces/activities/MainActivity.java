@@ -1,9 +1,14 @@
 package com.example.charmingplaces.activities;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -59,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.signInButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signin();
+                resultLauncher.launch(new Intent(mGoogleSignInClient.getSignInIntent()));
             }
         });
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -90,21 +95,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == RC_SIGN_IN){
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try{
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                Log.d(TAG, "firebaseAuthWithGoogle" + account.getId());
-                firebaseAuthWithGoogle(account.getIdToken());
-            } catch (ApiException e){
-                Log.w(TAG, "Google sign in failed", e);
-            }
-
-        }
-    }
 
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
@@ -124,10 +114,23 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    private void signin(){
-        Intent signIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signIntent, RC_SIGN_IN);
-    }
+    ActivityResultLauncher<Intent>resultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if(result.getResultCode() == Activity.RESULT_OK){
+                        Intent intent = result.getData();
+                        Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(intent);
+                        try{
+                            GoogleSignInAccount account = task.getResult(ApiException.class);
+                            Log.d(TAG, "firebaseAuthWithGoogle" + account.getId());
+                            firebaseAuthWithGoogle(account.getIdToken());
+                        } catch (ApiException e){
+                            Log.w(TAG, "Google sign in failed", e);
+                        }
+                    }
+                }
+            });
 
     private void updateUI(FirebaseUser currentUser) {
         FirebaseUser curUser = FirebaseAuth.getInstance().getCurrentUser();

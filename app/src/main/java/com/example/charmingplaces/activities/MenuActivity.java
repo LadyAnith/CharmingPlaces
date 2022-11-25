@@ -12,18 +12,38 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.charmingplaces.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MenuActivity extends AppCompatActivity {
     ConstraintLayout btnCapture;
     ConstraintLayout btnMap;
     ConstraintLayout btnListPlaces;
+    CircleImageView profileImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+        profileImage = findViewById(R.id.profile_image);
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if(currentUser != null){
+            Glide
+                    .with(this)
+                    .load(currentUser.getPhotoUrl().toString())
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .into(profileImage);
+        }
+        currentUser.getIdToken(true)
+                .addOnCompleteListener(command -> {
+                    String token = command.getResult().getToken();
+                    Log.i("token", token);
+                });
+
         btnCapture = findViewById(R.id.btnCapturePlaces);
         btnCapture.setOnClickListener(new View.OnClickListener() {
             @Override
