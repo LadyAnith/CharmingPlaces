@@ -111,7 +111,7 @@ public class CapturePlace extends AppCompatActivity {
         return new PhotoCreatePlaceRequestDto()
                 .setImage(imagen)
                 .setXcoord(gpsLocation.getLonguitude())
-                .setXcoord(gpsLocation.getLatitude())
+                .setYcoord(gpsLocation.getLatitude())
                 .setName(nombre.getText().toString())
                 .setCity(gpsLocation.getCity())
                 .setAddress(gpsLocation.getAddress());
