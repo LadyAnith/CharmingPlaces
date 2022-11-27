@@ -161,9 +161,12 @@ public class GMap {
     }
 
     private Marker addMarker(double lat, double lon, String title) {
+
+        float color = 0 + new Random().nextFloat() * (330 - 0);
+
         return gmapInstance.addMarker(new MarkerOptions()
                 .position(new LatLng(lat, lon))
+                .icon(BitmapDescriptorFactory.defaultMarker(color))
                 .title(title));
-
     }
 }
