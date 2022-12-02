@@ -70,7 +70,7 @@ public class GMap {
             PlacesDto placesDto = markersMap.get(eventMarker);
 
             ((TextView) this.popupView.findViewById(R.id.txtName)).setText(placesDto.getName());
-            setImage(this.popupView.findViewById(R.id.imgBBDD), placesDto.getUrl());
+            ImageUtils.setImage(this.popupView.findViewById(R.id.imgBBDD), placesDto.getUrl());
             setDirections(this.popupView.findViewById(R.id.btnLlegar), placesDto);
 
             popupWindow.showAtLocation(new View(activity), Gravity.CENTER, 0, 0);
@@ -87,15 +87,9 @@ public class GMap {
         });
     }
 
-    private void setImage(ImageView imageView, String encodedImage) {
 
-        byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
-        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-        imageView.setImageBitmap(decodedByte);
 
-    }
-
-    private void setDirections(Button link, PlacesDto placeData) {
+    public void setDirections(Button link, PlacesDto placeData) {
         link.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -11,13 +11,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.charmingplaces.R;
+import com.example.charmingplaces.activities.PlacesListActivity;
 import com.example.charmingplaces.pojo.PlacesDto;
 import com.example.charmingplaces.pojo.PlacesListResponseDto;
+import com.google.android.gms.maps.GoogleMap;
 
 import java.util.List;
 
 public class AdapterPlaces extends RecyclerView.Adapter<AdapterPlaces.ViewHolder> {
     PlacesListResponseDto placesDtoList;
+    GoogleMap googleMap;
 
     public AdapterPlaces(PlacesListResponseDto placesDtoList) {
         this.placesDtoList = placesDtoList;
@@ -33,12 +36,14 @@ public class AdapterPlaces extends RecyclerView.Adapter<AdapterPlaces.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull AdapterPlaces.ViewHolder holder, int position) {
-        //holder.imgPhoto.setImageBitmap(placesDtoList.get(position).getFoto());
+        ImageUtils.setImage(holder.imgPhoto, placesDtoList.getData().get(position).getUrl());
+
         holder.txtName.setText(placesDtoList.getData().get(position).getName());
         holder.btnButtonHowGet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                GMap gMap = new GMap(googleMap, new PlacesListActivity());
+                gMap.setDirections(holder.btnButtonHowGet,placesDtoList.getData().get(position));
             }
         });
     }

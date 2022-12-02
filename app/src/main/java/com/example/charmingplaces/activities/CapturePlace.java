@@ -13,6 +13,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -41,6 +43,7 @@ public class CapturePlace extends AppCompatActivity {
 
     Button play;
     Button send;
+    Button cancel;
 
     ImageView foto;
 
@@ -58,12 +61,9 @@ public class CapturePlace extends AppCompatActivity {
         setContentView(R.layout.activity_capture_place);
 
         ubicacion = findViewById(R.id.txtName);
-        pais = findViewById(R.id.txtPais);
-        ciudad = findViewById(R.id.txtUrl);
-        latitud = findViewById(R.id.txtLatitud);
-        longuitud = findViewById(R.id.txtLonguitud);
         play = findViewById(R.id.btnPlay);
         send = findViewById(R.id.btnSend);
+        cancel = findViewById(R.id.btnCancel);
         foto = findViewById(R.id.imgBBDD);
         nombre = findViewById(R.id.txtNamePlace);
 
@@ -80,11 +80,11 @@ public class CapturePlace extends AppCompatActivity {
         send.setOnClickListener(evento -> {
             play.setError(null);
             String resultadoNombre = nombre.getText().toString();
-            if(resultadoNombre.isEmpty()){
+            if (resultadoNombre.isEmpty()) {
                 nombre.setError("El nombre no puede ir vacío");
                 return;
             }
-            if(fotoBitmap == null) {
+            if (fotoBitmap == null) {
                 play.setError("Se debe realizar una foto");
                 Toast.makeText(this, "Debes de tomar una foto", Toast.LENGTH_LONG);
                 return;
@@ -95,7 +95,15 @@ public class CapturePlace extends AppCompatActivity {
                     responseSuccess -> Log.d("DEBUG", "Va todo OKey: " + responseSuccess),
                     error -> Log.d("ERROR", error.getMessage())
             );
+
+            nombre.setText("");
+            foto.setImageResource(R.drawable.picture);
             //test();
+        });
+
+        cancel.setOnClickListener(evento -> {
+            nombre.setText("");
+            foto.setImageResource(R.drawable.picture);
         });
 
     }
@@ -194,6 +202,25 @@ public class CapturePlace extends AppCompatActivity {
         ubicacion.setText("Dirección: " + gpsLocation.getAddress());
         ciudad.setText("Ciudad: " + gpsLocation.getCity());
         pais.setText("Pais: " + gpsLocation.getCountry());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu2, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action_back:
+                Intent i = new Intent(getApplicationContext(), MenuActivity.class);
+                startActivity(i);
+                break;
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

@@ -49,12 +49,15 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profile_image"
-            android:layout_width="96dp"
-            android:layout_height="96dp"
+            android:layout_width="65dp"
+            android:layout_height="63dp"
+            android:layout_marginTop="16dp"
             app:civ_border_color="#FF000000"
             app:civ_border_width="2dp"
-            tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="12dp" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -104,7 +107,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnMap"
-        app:layout_constraintVertical_bias="0.015">
+        app:layout_constraintVertical_bias="0.0">
 
         <ImageView
             android:id="@+id/imageView7"

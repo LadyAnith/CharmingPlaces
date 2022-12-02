@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //boton = (Button) findViewById(R.id.btnInicio);
-        boton2 = (Button) findViewById(R.id.btnRegistro);
+        //boton2 = (Button) findViewById(R.id.btnRegistro);
         /*
         boton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         mAuth = FirebaseAuth.getInstance();
 
-        boton2.setOnClickListener(new View.OnClickListener() {
+      /*  boton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Con el evento onClick, llamo a la actividad del Registro
@@ -84,6 +84,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+
+       */
     }
 
     @Override

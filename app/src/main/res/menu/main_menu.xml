@@ -5,12 +5,8 @@
     <item
         android:id="@+id/action_logout"
         android:title="Log Out"
-        app:showAsAction="never"
+        android:icon="@drawable/apagar"
+        app:showAsAction="ifRoom"
 
         />
-    <item
-        android:id="@+id/action_user"
-        android:title="Hello!!"
-        app:showAsAction="ifRoom"/>
-
 </menu>

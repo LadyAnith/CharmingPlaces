@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#D0B1E3FA"
     android:orientation="horizontal">
 
 
@@ -21,7 +22,7 @@
         android:id="@+id/txtNamePlaceBBDD"
         android:layout_width="166dp"
         android:layout_height="42dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="24dp"
         android:text="Nombre:"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -35,6 +36,7 @@
         android:layout_width="157dp"
         android:layout_height="50dp"
         android:layout_marginTop="16dp"
+        android:backgroundTint="#E400BCD4"
         android:text="how to get"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.937"
@@ -45,8 +47,28 @@
         android:id="@+id/divider"
         android:layout_width="409dp"
         android:layout_height="1dp"
-        android:background="?android:attr/listDivider"
+        android:background="#00BCD4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="201dp" />
+
+    <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="48dp"
+        android:layout_height="49dp"
+        app:layout_constraintEnd_toEndOf="@+id/btnHowToGet"
+        app:layout_constraintHorizontal_bias="0.871"
+        app:layout_constraintStart_toStartOf="@+id/btnHowToGet"
+        app:srcCompat="@drawable/me_gusta"
+        tools:layout_editor_absoluteY="141dp" />
+
+    <ImageView
+        android:id="@+id/imageView10"
+        android:layout_width="48dp"
+        android:layout_height="49dp"
+        app:layout_constraintEnd_toEndOf="@+id/btnHowToGet"
+        app:layout_constraintHorizontal_bias="0.165"
+        app:layout_constraintStart_toStartOf="@+id/btnHowToGet"
+        app:srcCompat="@drawable/dislike"
+        tools:layout_editor_absoluteY="141dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

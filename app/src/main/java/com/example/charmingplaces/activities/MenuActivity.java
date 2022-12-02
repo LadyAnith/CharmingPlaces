@@ -37,6 +37,7 @@ public class MenuActivity extends AppCompatActivity {
                     .load(currentUser.getPhotoUrl().toString())
                     .placeholder(R.drawable.ic_launcher_background)
                     .into(profileImage);
+            Log.i("EMAIIIIILL", currentUser.getUid());
         }
         currentUser.getIdToken(true)
                 .addOnCompleteListener(command -> {
@@ -87,9 +88,6 @@ public class MenuActivity extends AppCompatActivity {
             case R.id.action_logout:
                 Log.d("DESLOGUEADO", "APAGADOOOOOOOOOOOOOOOOOOOOOO");
                 signOut();
-                break;
-            case R.id.action_user:
-                Toast.makeText(this, "USUARIO", Toast.LENGTH_SHORT).show();
                 break;
 
         }

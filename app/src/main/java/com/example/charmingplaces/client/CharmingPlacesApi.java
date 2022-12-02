@@ -34,6 +34,7 @@ public class CharmingPlacesApi extends AbstractCharmingPlacesApi{
     private static final String GET_PLACES_NEAR_ENDPOINT = "/findNear?xcoord=%s&ycoord=%s";
     private static final String GET_PLACES_AREA_ENDPOINT = "/placesInsideArea";
 
+
     /**
      * Crea un punto de interés en el sistema enviando los datos del punto de interés por REST al microservicio spring
      *
@@ -91,5 +92,19 @@ public class CharmingPlacesApi extends AbstractCharmingPlacesApi{
         executeCall(Request.Method.POST, url, request, success,  errorCallback);
     }
 
+    public void findAll(Response.Listener<PlacesListResponseDto> successCallback, Response.ErrorListener errorCallback) {
+        String urlBase = URL_BASE;
+
+        //Indicamos el tipo de respuesta para convertir desde el micro a un objeto que podamos manejar
+        Type typeList = new TypeToken<PlacesListResponseDto>() {}.getType();
+
+        //Construimos un listener que ejecutará lo que indiquemos como parámetro tras convertir nuestro JSON a Objeto java
+        Response.Listener<JSONObject> success = result -> {
+            successCallback.onResponse(jsonToObject(result, typeList));
+        };
+
+        executeCall(Request.Method.GET, urlBase, null, success,  errorCallback);
+
+    }
 
 }

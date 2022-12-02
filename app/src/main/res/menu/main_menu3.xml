@@ -8,4 +8,14 @@
         android:icon="@drawable/volver"
         app:showAsAction="ifRoom"/>
 
+    <item
+        android:id="@+id/action_list"
+        android:title="List of Places"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_favoriteList"
+        android:title="List of Favorite Places"
+        app:showAsAction="never"/>
+
 </menu>
