@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -58,12 +59,12 @@ public class Gps {
 
 
                                     //TODO BORRAR ESTA TRAMPA
-                                    gpsLocation.setLatitude(39.64663975887039).setLonguitude(-4.275421116794311);
+//                                    gpsLocation.setLatitude(39.64663975887039).setLonguitude(-4.275421116794311);
 
                                     callback.execute(gpsLocation);
 
                                 } catch (IOException e) {
-                                    e.printStackTrace();
+                                    Log.e("ERROR", "GPS Error", e);
                                 }
 
                             }

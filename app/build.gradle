@@ -28,13 +28,14 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
+/*
     packagingOptions {
         resources {
             //Esxcluir todos los metainf duplicados
             merges.add("META-INF/*")
         }
     }
+    */
     buildFeatures {
         viewBinding true
     }
