@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,14 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.charmingplaces.R;
 import com.example.charmingplaces.client.PlacesApi;
 import com.example.charmingplaces.logic.AdapterPlaces;
-import com.example.charmingplaces.pojo.PlacesListResponseDto;
-
-import java.util.ArrayList;
 
 public class PlacesListActivity extends AppCompatActivity {
 
     private RecyclerView recycler;
     private PlacesApi charmingPlacesApi;
+    public static final int OPTION_LIST= R.id.action_list;
+    public static final int OPTION_FAVORITE= R.id.action_favoriteList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +32,7 @@ public class PlacesListActivity extends AppCompatActivity {
         charmingPlacesApi.findAll(
                 response -> {
                     recycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-                    AdapterPlaces adaptador = new AdapterPlaces(this, response);
+                    AdapterPlaces adaptador = new AdapterPlaces(this, response, OPTION_FAVORITE);
                     recycler.setAdapter(adaptador);
                 },
                 null);
@@ -59,7 +57,7 @@ public class PlacesListActivity extends AppCompatActivity {
                 charmingPlacesApi.findAll(
                         response -> {
                             recycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-                            AdapterPlaces adaptador = new AdapterPlaces(this, response);
+                            AdapterPlaces adaptador = new AdapterPlaces(this, response, OPTION_LIST);
                             recycler.setAdapter(adaptador);
                         },
                         null);
@@ -68,8 +66,9 @@ public class PlacesListActivity extends AppCompatActivity {
                 charmingPlacesApi.findFavorites(
                         response -> {
                             recycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-                            AdapterPlaces adaptador = new AdapterPlaces(this, response);
+                            AdapterPlaces adaptador = new AdapterPlaces(this, response, OPTION_FAVORITE);
                             recycler.setAdapter(adaptador);
+
                         },
                         null);
                 break;

@@ -1,10 +1,12 @@
 package com.example.charmingplaces.logic;
 
+import static com.example.charmingplaces.activities.PlacesListActivity.OPTION_FAVORITE;
+import static com.example.charmingplaces.activities.PlacesListActivity.OPTION_LIST;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,10 +29,12 @@ public class AdapterPlaces extends RecyclerView.Adapter<AdapterPlaces.ViewHolder
     VotesApi votesApi;
     private Gps gps;
     private Activity context;
+    private int menuOption;
 
 
-    public AdapterPlaces(Activity context, PlacesListResponseDto placesDtoList) {
+    public AdapterPlaces(Activity context, PlacesListResponseDto placesDtoList, int menuOption) {
         this.context = context;
+        this.menuOption = menuOption;
         this.placesDtoList = placesDtoList;
         votesApi = new VotesApi(context);
         gps = new Gps(context);
@@ -52,11 +56,7 @@ public class AdapterPlaces extends RecyclerView.Adapter<AdapterPlaces.ViewHolder
         holder.txtName.setText(placeData.getName());
         holder.txtLikes.setText("Likes: " + placeData.getVotes());
 
-        if (placeData.isVoted()) {
-            holder.btnLike.setImageResource(R.drawable.estrella);
-        } else {
-            holder.btnLike.setImageResource(R.drawable.me_gusta);
-        }
+        setVotesResponse(holder, placeData, placeData);
 
         holder.btnButtonHowGet.setOnClickListener(new View.OnClickListener() {
 
@@ -80,13 +80,12 @@ public class AdapterPlaces extends RecyclerView.Adapter<AdapterPlaces.ViewHolder
             if (placeData.isVoted()) {
                 votesApi.deleteVote(
                         voteRequestDto,
-                        response -> setVotesResponse(holder, placeData, response, R.drawable.me_gusta)
-
+                        response -> setVotesResponse(holder, placeData, response)
                 );
             } else {
                 votesApi.addVote(
                         voteRequestDto,
-                        response -> setVotesResponse(holder, placeData, response, R.drawable.estrella)
+                        response -> setVotesResponse(holder, placeData, response)
                 );
             }
 
@@ -98,11 +97,24 @@ public class AdapterPlaces extends RecyclerView.Adapter<AdapterPlaces.ViewHolder
         return placesDtoList.getData().size();
     }
 
-    public static void setVotesResponse(ViewHolder holder, PlacesDto placeData, PlacesDto response, int icon) {
-        holder.btnLike.setImageResource(R.drawable.estrella);
+    public void setVotesResponse(ViewHolder holder, PlacesDto placeData, PlacesDto response) {
         placeData.setVoted(response.isVoted());
         placeData.setVotes(response.getVotes());
+
         holder.txtLikes.setText("Likes: " + placeData.getVotes());
+        if (placeData.isVoted()) {
+            holder.btnLike.setImageResource(R.drawable.estrella);
+        } else {
+            holder.btnLike.setImageResource(R.drawable.me_gusta);
+        }
+
+        if(menuOption == OPTION_FAVORITE){
+            holder.btnLike.setVisibility(View.INVISIBLE);
+        }
+        if(menuOption == OPTION_LIST){
+            holder.btnLike.setVisibility(View.VISIBLE);
+        }
+
     }
 
     // AUXILIAR CLASS

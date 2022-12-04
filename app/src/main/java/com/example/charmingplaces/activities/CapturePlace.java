@@ -194,14 +194,7 @@ public class CapturePlace extends AppCompatActivity {
 
     public void gpsLocationCallback(GpsLocation gpsLocation) {
         Toast.makeText(this, "FUNCIONA" + gpsLocation.getCity(), Toast.LENGTH_SHORT).show();
-
         this.gpsLocation = gpsLocation;
-
-        latitud.setText("Latitud: " + gpsLocation.getLatitude());
-        longuitud.setText("Longuitud: " + gpsLocation.getLonguitude());
-        ubicacion.setText("Dirección: " + gpsLocation.getAddress());
-        ciudad.setText("Ciudad: " + gpsLocation.getCity());
-        pais.setText("Pais: " + gpsLocation.getCountry());
     }
 
     @Override
