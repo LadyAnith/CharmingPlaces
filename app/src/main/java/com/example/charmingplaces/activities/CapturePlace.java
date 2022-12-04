@@ -21,7 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.charmingplaces.client.CharmingPlacesApi;
+import com.example.charmingplaces.client.PlacesApi;
 import com.example.charmingplaces.logic.Gps;
 import com.example.charmingplaces.pojo.GpsLocation;
 import com.example.charmingplaces.pojo.PhotoCreatePlaceRequestDto;
@@ -53,7 +53,7 @@ public class CapturePlace extends AppCompatActivity {
 
     //Services
     private Gps gps;
-    private CharmingPlacesApi placesApi;
+    private PlacesApi placesApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +68,7 @@ public class CapturePlace extends AppCompatActivity {
         nombre = findViewById(R.id.txtNamePlace);
 
         gps = new Gps(this);
-        placesApi = new CharmingPlacesApi(this);
+        placesApi = new PlacesApi(this);
 
         play.setOnClickListener(evento -> {
             play.setError(null);

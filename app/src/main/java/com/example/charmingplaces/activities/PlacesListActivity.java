@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,20 +12,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.charmingplaces.R;
-import com.example.charmingplaces.client.CharmingPlacesApi;
+import com.example.charmingplaces.client.PlacesApi;
 import com.example.charmingplaces.logic.AdapterPlaces;
-import com.example.charmingplaces.logic.Gps;
-import com.example.charmingplaces.pojo.PlacesDto;
 import com.example.charmingplaces.pojo.PlacesListResponseDto;
-import com.example.charmingplaces.pojo.PlacesNearRequestDto;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class PlacesListActivity extends AppCompatActivity {
 
     private RecyclerView recycler;
-    private CharmingPlacesApi charmingPlacesApi;
+    private PlacesApi charmingPlacesApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,19 +29,17 @@ public class PlacesListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_places_list);
 
         recycler = (RecyclerView) findViewById(R.id.listPlaces);
-        charmingPlacesApi = new CharmingPlacesApi(this);
+        charmingPlacesApi = new PlacesApi(this);
 
         charmingPlacesApi.findAll(
                 response -> {
                     recycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-
-                    AdapterPlaces adaptador = new AdapterPlaces(response);
+                    AdapterPlaces adaptador = new AdapterPlaces(this, response);
                     recycler.setAdapter(adaptador);
                 },
                 null);
-
-
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -61,10 +56,22 @@ public class PlacesListActivity extends AppCompatActivity {
                 startActivity(i);
                 break;
             case R.id.action_list:
-
+                charmingPlacesApi.findAll(
+                        response -> {
+                            recycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+                            AdapterPlaces adaptador = new AdapterPlaces(this, response);
+                            recycler.setAdapter(adaptador);
+                        },
+                        null);
                 break;
             case R.id.action_favoriteList:
-
+                charmingPlacesApi.findFavorites(
+                        response -> {
+                            recycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+                            AdapterPlaces adaptador = new AdapterPlaces(this, response);
+                            recycler.setAdapter(adaptador);
+                        },
+                        null);
                 break;
 
         }

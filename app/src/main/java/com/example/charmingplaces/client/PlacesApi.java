@@ -22,17 +22,17 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CharmingPlacesApi extends AbstractCharmingPlacesApi{
+public class PlacesApi extends AbstractCharmingPlacesApi{
 
-    public CharmingPlacesApi(Context context){
+    public PlacesApi(Context context){
         super(context);
     }
 
 
     private static final String URL_BASE = "http://192.168.1.104:8080/places";
-    private static final String CREATE_PLACE_ENDPOINT = "/img";
     private static final String GET_PLACES_NEAR_ENDPOINT = "/findNear?xcoord=%s&ycoord=%s";
     private static final String GET_PLACES_AREA_ENDPOINT = "/placesInsideArea";
+    private static final String GET_FAVORITE_PLACES_ENDPOINT = "/findFavorites";
 
 
     /**
@@ -43,7 +43,7 @@ public class CharmingPlacesApi extends AbstractCharmingPlacesApi{
      * @param errorCallback qué función ejecutar si hay un error al insertar el lugar de interés
      */
     public void createInterestingPoint(PhotoCreatePlaceRequestDto data, Response.Listener<PhotoCreatePlaceRequestDto> successCallback, Response.ErrorListener errorCallback) {
-        String url = URL_BASE + CREATE_PLACE_ENDPOINT;
+        String url = URL_BASE;
         //Convierto el objeto PhotoCreatePlaceRequestDto a formato JSON
         JSONObject request = objectToJSON(data);
 
@@ -107,4 +107,18 @@ public class CharmingPlacesApi extends AbstractCharmingPlacesApi{
 
     }
 
+    public void findFavorites(Response.Listener<PlacesListResponseDto> successCallback, Response.ErrorListener errorCallback) {
+        String urlBase = URL_BASE + GET_FAVORITE_PLACES_ENDPOINT;
+
+        //Indicamos el tipo de respuesta para convertir desde el micro a un objeto que podamos manejar
+        Type typeList = new TypeToken<PlacesListResponseDto>() {}.getType();
+
+        //Construimos un listener que ejecutará lo que indiquemos como parámetro tras convertir nuestro JSON a Objeto java
+        Response.Listener<JSONObject> success = result -> {
+            successCallback.onResponse(jsonToObject(result, typeList));
+        };
+
+        executeCall(Request.Method.GET, urlBase, null, success,  errorCallback);
+
+    }
 }

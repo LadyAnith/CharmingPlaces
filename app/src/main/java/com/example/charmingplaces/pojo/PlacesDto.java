@@ -7,13 +7,17 @@ public class PlacesDto {
     private String url;
     private double xcoord;
     private double ycoord;
+    private Integer votes;
+    private boolean voted;
 
-    public PlacesDto(String id, String name, double xcoord, double ycoord, String url) {
+    public PlacesDto(String id, String name, double xcoord, double ycoord, String url, Integer votes, boolean voted) {
         this.id = id;
         this.name = name;
         this.xcoord = xcoord;
         this.ycoord = ycoord;
         this.url = url;
+        this.votes = votes;
+        this.voted = voted;
     }
 
     public PlacesDto() {
@@ -57,5 +61,21 @@ public class PlacesDto {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public Integer getVotes() {
+        return votes;
+    }
+
+    public void setVotes(Integer votes) {
+        this.votes = votes;
+    }
+
+    public boolean isVoted() {
+        return voted;
+    }
+
+    public void setVoted(boolean voted) {
+        this.voted = voted;
     }
 }

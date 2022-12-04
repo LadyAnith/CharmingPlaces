@@ -1,21 +1,19 @@
 package com.example.charmingplaces.logic;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.content.Intent;
+import android.net.Uri;
 import android.text.util.Linkify;
-import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.example.charmingplaces.R;
-import com.example.charmingplaces.client.CharmingPlacesApi;
+import com.example.charmingplaces.client.PlacesApi;
 import com.example.charmingplaces.pojo.GeoPoint;
 import com.example.charmingplaces.pojo.PlacesDto;
 import com.example.charmingplaces.pojo.PlacesInsideAreaRequestDto;
@@ -32,24 +30,23 @@ import java.util.Map;
 import java.util.Random;
 
 public class GMap {
+    private Activity context;
     private GoogleMap gmapInstance;
     private Gps gps;
-    private CharmingPlacesApi charmingPlacesApi;
-    private boolean isMarkerClicked = false;
-    private Map<Marker, PlacesDto> markersMap = new HashMap<>();
+    private PlacesApi charmingPlacesApi;
 
     private PopupWindow popupWindow;
     private View popupView;
 
-    public GoogleMap getInstance() {
-        return gmapInstance;
-    }
+    private boolean isMarkerClicked = false;
+    private Map<Marker, PlacesDto> markersMap = new HashMap<>();
 
-    public GMap(GoogleMap googleMap, Activity activity) {
+    public GMap(GoogleMap googleMap, Activity context) {
+        this.context = context;
         this.gmapInstance = googleMap;
-        this.gps = new Gps(activity);
-        this.charmingPlacesApi = new CharmingPlacesApi(activity);
-        this.popupView = LayoutInflater.from(activity).inflate(R.layout.place_info_window_popup, null, false);
+        this.gps = new Gps(context);
+        this.charmingPlacesApi = new PlacesApi(context);
+        this.popupView = LayoutInflater.from(context).inflate(R.layout.place_info_window_popup, null, false);
         popupWindow = new PopupWindow(popupView, 1000, 1500, false);
 
 
@@ -73,7 +70,7 @@ public class GMap {
             ImageUtils.setImage(this.popupView.findViewById(R.id.imgBBDD), placesDto.getUrl());
             setDirections(this.popupView.findViewById(R.id.btnLlegar), placesDto);
 
-            popupWindow.showAtLocation(new View(activity), Gravity.CENTER, 0, 0);
+            popupWindow.showAtLocation(new View(context), Gravity.CENTER, 0, 0);
 
             isMarkerClicked = true;
             return false;
@@ -95,9 +92,10 @@ public class GMap {
             public void onClick(View v) {
                 gps.getLocation(gpsLocation -> {
                     String template = "https://www.google.es/maps/dir/%s,%s/%s,%s";
-                    String uri = String.format(template, placeData.getYcoord(), placeData.getXcoord(), gpsLocation.getLatitude(), gpsLocation.getLonguitude());
-                    link.setText(uri);
-                    Linkify.addLinks(link, Linkify.WEB_URLS);
+                    String url = String.format(template, placeData.getYcoord(), placeData.getXcoord(), gpsLocation.getLatitude(), gpsLocation.getLonguitude());
+                    Uri uri = Uri.parse(url);
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    context.startActivity(intent);
                 });
 
             }

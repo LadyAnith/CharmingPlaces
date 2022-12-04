@@ -6,6 +6,7 @@ import android.util.Log;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -26,11 +27,34 @@ public class AbstractCharmingPlacesApi {
 
     protected void executeCall(int method, String url, JSONObject request, Response.Listener<JSONObject> success, Response.ErrorListener errorCallback) {
 
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                method,
+                url,
+                request,
+                success,
+                errorCallback) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("user-id", userId);
+                return headers;
+            }
+        };
+
+        // Esto añade la request que enviamos hacia el controller a una cola de peticiones y la manda cuando tenga disponibilidad
+        RequestQueue.getInstance(context).addToRequestQueue(jsonObjectRequest);
+
+    }
+
+    @Deprecated
+    protected void executeCallOld(int method, String url, JSONObject request, Response.Listener<JSONObject> success, Response.ErrorListener errorCallback) {
+
         FirebaseAuth.getInstance().getCurrentUser()
                 .getIdToken(true)
                 .addOnCompleteListener(task -> {
                     String token = "Bearer " + task.getResult().getToken();
-
                     JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                             method,
                             url,
