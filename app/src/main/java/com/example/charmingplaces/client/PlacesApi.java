@@ -29,7 +29,7 @@ public class CharmingPlacesApi extends AbstractCharmingPlacesApi{
     }
 
 
-    private static final String URL_BASE = "http://192.168.1.104:8080/lugares";
+    private static final String URL_BASE = "http://192.168.1.104:8080/places";
     private static final String CREATE_PLACE_ENDPOINT = "/img";
     private static final String GET_PLACES_NEAR_ENDPOINT = "/findNear?xcoord=%s&ycoord=%s";
     private static final String GET_PLACES_AREA_ENDPOINT = "/placesInsideArea";
