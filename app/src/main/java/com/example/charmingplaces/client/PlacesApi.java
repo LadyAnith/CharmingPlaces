@@ -42,14 +42,12 @@ public class PlacesApi extends AbstractCharmingPlacesApi{
      * @param successCallback qué función ejecutar si va OK
      * @param errorCallback qué función ejecutar si hay un error al insertar el lugar de interés
      */
-    public void createInterestingPoint(PhotoCreatePlaceRequestDto data, Response.Listener<PhotoCreatePlaceRequestDto> successCallback, Response.ErrorListener errorCallback) {
+    public void createInterestingPoint(PhotoCreatePlaceRequestDto data, Response.Listener<Void> successCallback, Response.ErrorListener errorCallback) {
         String url = URL_BASE;
         //Convierto el objeto PhotoCreatePlaceRequestDto a formato JSON
         JSONObject request = objectToJSON(data);
 
-        //Indicamos el tipo de respuesta para convertir desde el micro a un objeto que podamos manejar
-        Type typeList = new TypeToken<PhotoCreatePlaceRequestDto>() {}.getType();
-        Response.Listener<JSONObject> success = (result -> successCallback.onResponse(jsonToObject(result, typeList)));
+        Response.Listener<JSONObject> success = (result -> successCallback.onResponse(null));
 
         executeCall(Request.Method.POST, url, request, success,  errorCallback);
 

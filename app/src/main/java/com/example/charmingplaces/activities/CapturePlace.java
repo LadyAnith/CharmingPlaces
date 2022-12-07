@@ -92,7 +92,7 @@ public class CapturePlace extends AppCompatActivity {
 
             PhotoCreatePlaceRequestDto photo = buildRequestData();
             placesApi.createInterestingPoint(photo,
-                    responseSuccess -> Log.d("DEBUG", "Va todo OKey: " + responseSuccess),
+                    responseSuccess -> Log.d("DEBUG", "Va todo OKey"),
                     error -> Log.d("ERROR", error.getMessage())
             );
 
@@ -193,7 +193,6 @@ public class CapturePlace extends AppCompatActivity {
     }
 
     public void gpsLocationCallback(GpsLocation gpsLocation) {
-        Toast.makeText(this, "FUNCIONA" + gpsLocation.getCity(), Toast.LENGTH_SHORT).show();
         this.gpsLocation = gpsLocation;
     }
 

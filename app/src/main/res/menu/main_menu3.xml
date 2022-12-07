@@ -15,7 +15,7 @@
 
     <item
         android:id="@+id/action_favoriteList"
-        android:title="List my Favorites"
+        android:title="List of my Favorites"
         app:showAsAction="never"/>
 
 </menu>

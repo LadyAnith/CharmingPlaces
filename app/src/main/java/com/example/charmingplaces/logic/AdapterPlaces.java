@@ -50,7 +50,7 @@ public class AdapterPlaces extends RecyclerView.Adapter<AdapterPlaces.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull AdapterPlaces.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        ImageUtils.setImage(holder.imgPhoto, placesDtoList.getData().get(position).getUrl());
+        ImageUtils.setImage(holder.imgPhoto, placesDtoList.getData().get(position).getImageContent());
 
         PlacesDto placeData = placesDtoList.getData().get(position);
         holder.txtName.setText(placeData.getName());

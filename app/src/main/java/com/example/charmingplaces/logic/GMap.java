@@ -67,7 +67,7 @@ public class GMap {
             PlacesDto placesDto = markersMap.get(eventMarker);
 
             ((TextView) this.popupView.findViewById(R.id.txtName)).setText(placesDto.getName());
-            ImageUtils.setImage(this.popupView.findViewById(R.id.imgBBDD), placesDto.getUrl());
+            ImageUtils.setImage(this.popupView.findViewById(R.id.imgBBDD), placesDto.getImageContent());
             setDirections(this.popupView.findViewById(R.id.btnLlegar), placesDto);
 
             popupWindow.showAtLocation(new View(context), Gravity.CENTER, 0, 0);

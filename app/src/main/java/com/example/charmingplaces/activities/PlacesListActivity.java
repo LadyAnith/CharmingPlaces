@@ -32,7 +32,7 @@ public class PlacesListActivity extends AppCompatActivity {
         charmingPlacesApi.findAll(
                 response -> {
                     recycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-                    AdapterPlaces adaptador = new AdapterPlaces(this, response, OPTION_FAVORITE);
+                    AdapterPlaces adaptador = new AdapterPlaces(this, response, OPTION_LIST);
                     recycler.setAdapter(adaptador);
                 },
                 null);

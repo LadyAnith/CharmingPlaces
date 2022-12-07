@@ -4,18 +4,18 @@ public class PlacesDto {
 
     private String id;
     private String name;
-    private String url;
+    private String imageContent;
     private double xcoord;
     private double ycoord;
     private Integer votes;
     private boolean voted;
 
-    public PlacesDto(String id, String name, double xcoord, double ycoord, String url, Integer votes, boolean voted) {
+    public PlacesDto(String id, String name, double xcoord, double ycoord, String imageContent, Integer votes, boolean voted) {
         this.id = id;
         this.name = name;
         this.xcoord = xcoord;
         this.ycoord = ycoord;
-        this.url = url;
+        this.imageContent = imageContent;
         this.votes = votes;
         this.voted = voted;
     }
@@ -55,12 +55,12 @@ public class PlacesDto {
         this.ycoord = ycoord;
     }
 
-    public String getUrl() {
-        return url;
+    public String getImageContent() {
+        return imageContent;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setImageContent(String imageContent) {
+        this.imageContent = imageContent;
     }
 
     public Integer getVotes() {
