@@ -5,6 +5,9 @@ import android.content.Context;
 import com.android.volley.Request;
 import com.android.volley.toolbox.Volley;
 
+/**
+ * Clase encargada de lanzar las peticiones REST
+ */
 public class RequestQueue {
     private  static RequestQueue instance;
     private com.android.volley.RequestQueue requestQueue;

@@ -19,74 +19,90 @@ import com.google.firebase.auth.FirebaseUser;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/**
+ * Pantalla de la página principal de la aplicación, contiene el menú de opciones
+ */
 public class MenuActivity extends AppCompatActivity {
-    ConstraintLayout btnCapture;
-    ConstraintLayout btnMap;
-    ConstraintLayout btnListPlaces;
-    CircleImageView profileImage;
+    private ConstraintLayout btnCapture;
+    private ConstraintLayout btnMap;
+    private ConstraintLayout btnListPlaces;
+    private CircleImageView profileImage;
 
+    /**
+     * Método que se ejecuta al cargar la pantalla, se encarga de pintar el layout y de
+     * instanciar las variables de los input y servicios que se utilizarán en este activity.
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
         profileImage = findViewById(R.id.profile_image);
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if(currentUser != null){
+        //Tomo el usuario logueado para mostrar su imagen en el menú
+        if (currentUser != null) {
             Glide
                     .with(this)
                     .load(currentUser.getPhotoUrl().toString())
                     .placeholder(R.drawable.ic_launcher_background)
                     .into(profileImage);
-            Log.i("EMAIIIIILL", currentUser.getUid());
+            Log.i("EMAIL", currentUser.getUid());
         }
+        // Verifico el token del usuario para imprimirlo por consola
         currentUser.getIdToken(true)
                 .addOnCompleteListener(command -> {
                     String token = command.getResult().getToken();
                     Log.i("token", token);
                 });
 
+        //Botón que abre la pantalla de Capture
         btnCapture = findViewById(R.id.btnCapturePlaces);
-        btnCapture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), CapturePlace.class);
-                startActivity(i);
-
-            }
+        btnCapture.setOnClickListener(v -> {
+            Intent i = new Intent(getApplicationContext(), CapturePlace.class);
+            startActivity(i);
 
         });
 
+        //Botón que abre la pantalla del Mapa
         btnMap = findViewById(R.id.btnMap);
-        btnMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), MapActivity.class);
-                startActivity(i);
-
-            }
+        btnMap.setOnClickListener(v -> {
+            Intent i = new Intent(getApplicationContext(), MapActivity.class);
+            startActivity(i);
 
         });
 
+        //Botón que abre la pantalla del Listado de lugares
         btnListPlaces = findViewById(R.id.btnListPlaces);
-        btnListPlaces.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), PlacesListActivity.class);
-                startActivity(i);
-            }
+        btnListPlaces.setOnClickListener(v -> {
+            Intent i = new Intent(getApplicationContext(), PlacesListActivity.class);
+            startActivity(i);
         });
     }
+
+    /**
+     * Método para mostrar el menú en la vista
+     *
+     * @param menu
+     * @return
+     */
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
-        return  super.onCreateOptionsMenu(menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
+    /**
+     * Método que crea un evento al clickar el item del menú
+     *
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch(item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.action_logout:
-                Log.d("DESLOGUEADO", "APAGADOOOOOOOOOOOOOOOOOOOOOO");
+                Log.d("DESLOGUEADO", "Usuario Desconectado");
                 signOut();
                 break;
 
@@ -94,7 +110,10 @@ public class MenuActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void signOut(){
+    /**
+     * Método encargado de cerrar sesión
+     */
+    public void signOut() {
         FirebaseAuth.getInstance().signOut();
         Intent intent = new Intent(MenuActivity.this, MainActivity.class);
         startActivity(intent);

@@ -15,25 +15,33 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 
+/**
+ * Fragmento del mapa
+ */
 public class MapFragment extends Fragment {
 
     public static GMap gmap;
 
 
+    /**
+     * Crea el mapa en el fragmento
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
         SupportMapFragment supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-        supportMapFragment.getMapAsync(new OnMapReadyCallback() {
-
-            @Override
-            public void onMapReady(@NonNull GoogleMap googleMap) {
+        //Una vez creado el mapa, añade los marcadores de los lugares de interés cercanos
+        supportMapFragment.getMapAsync(googleMap-> {
 
                 gmap = new GMap(googleMap, getActivity());
                 gmap.findNearMarkersFromUser();
-            }
         });
 
         return view;

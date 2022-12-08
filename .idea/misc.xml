@@ -4,14 +4,21 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Anith/AndroidStudioProjects/CharmingPlaces/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.168" />
+        <entry key="..\:/Users/Anith/AndroidStudioProjects/CharmingPlaces/app/src/main/res/drawable/account.xml" value="0.194" />
         <entry key="..\:/Users/Anith/AndroidStudioProjects/CharmingPlaces/app/src/main/res/drawable/background_button.xml" value="0.213" />
         <entry key="..\:/Users/Anith/AndroidStudioProjects/CharmingPlaces/app/src/main/res/drawable/background_top.xml" value="0.211" />
+        <entry key="..\:/Users/Anith/AndroidStudioProjects/CharmingPlaces/app/src/main/res/drawable/ic_baseline_add_location_alt_24.xml" value="0.194" />
         <entry key="..\:/Users/Anith/AndroidStudioProjects/CharmingPlaces/app/src/main/res/drawable/ic_baseline_image_24.xml" value="0.168" />
+        <entry key="..\:/Users/Anith/AndroidStudioProjects/CharmingPlaces/app/src/main/res/drawable/ic_baseline_lock_24.xml" value="0.194" />
         <entry key="..\:/Users/Anith/AndroidStudioProjects/CharmingPlaces/app/src/main/res/drawable/ic_launcher_background.xml" value="0.168" />
+        <entry key="..\:/Users/Anith/AndroidStudioProjects/CharmingPlaces/app/src/main/res/drawable/ic_menu_camera.xml" value="0.194" />
+        <entry key="..\:/Users/Anith/AndroidStudioProjects/CharmingPlaces/app/src/main/res/drawable/ic_menu_gallery.xml" value="0.194" />
         <entry key="..\:/Users/Anith/AndroidStudioProjects/CharmingPlaces/app/src/main/res/drawable/ic_menu_slideshow.xml" value="0.1555" />
         <entry key="..\:/Users/Anith/AndroidStudioProjects/CharmingPlaces/app/src/main/res/drawable/key.xml" value="0.1515" />
+        <entry key="..\:/Users/Anith/AndroidStudioProjects/CharmingPlaces/app/src/main/res/drawable/mail.xml" value="0.194" />
         <entry key="..\:/Users/Anith/AndroidStudioProjects/CharmingPlaces/app/src/main/res/drawable/shadow_background.xml" value="0.1505" />
         <entry key="..\:/Users/Anith/AndroidStudioProjects/CharmingPlaces/app/src/main/res/drawable/side_nav_bar.xml" value="0.2595" />
+        <entry key="..\:/Users/Anith/AndroidStudioProjects/CharmingPlaces/app/src/main/res/drawable/user.xml" value="0.194" />
         <entry key="..\:/Users/Anith/AndroidStudioProjects/CharmingPlaces/app/src/main/res/layout/activity_capture_place.xml" value="0.25" />
         <entry key="..\:/Users/Anith/AndroidStudioProjects/CharmingPlaces/app/src/main/res/layout/activity_charming_place.xml" value="0.24682971014492755" />
         <entry key="..\:/Users/Anith/AndroidStudioProjects/CharmingPlaces/app/src/main/res/layout/activity_main.xml" value="0.25" />

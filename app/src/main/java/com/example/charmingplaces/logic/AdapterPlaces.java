@@ -24,6 +24,9 @@ import com.example.charmingplaces.pojo.PlacesListResponseDto;
 import com.example.charmingplaces.pojo.VoteRequestDto;
 import com.google.firebase.auth.FirebaseAuth;
 
+/**
+ * Adaptador del recycler view del listado de lugares de interés
+ */
 public class AdapterPlaces extends RecyclerView.Adapter<AdapterPlaces.ViewHolder> {
     PlacesListResponseDto placesDtoList;
     VotesApi votesApi;
@@ -58,20 +61,24 @@ public class AdapterPlaces extends RecyclerView.Adapter<AdapterPlaces.ViewHolder
 
         setVotesResponse(holder, placeData, placeData);
 
-        holder.btnButtonHowGet.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                gps.getLocation(gpsLocation -> {
-                    String template = "https://www.google.es/maps/dir/%s,%s/%s,%s";
-                    String url = String.format(template, placeData.getYcoord(), placeData.getXcoord(), gpsLocation.getLatitude(), gpsLocation.getLonguitude());
-                    Uri uri = Uri.parse(url);
-                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                    context.startActivity(intent);
-                });
-            }
+        /* Botón al que al hacer click, indicará al usuario como llegar al lugar tomando la ubicaciión del usuario con el GPS
+         * y abriendo el navegador con la direcciones de Google Maps
+         */
+        holder.btnButtonHowGet.setOnClickListener(v -> {
+            gps.getLocation(gpsLocation -> {
+                String template = "https://www.google.es/maps/dir/%s,%s/%s,%s";
+                String url = String.format(template, placeData.getYcoord(), placeData.getXcoord(), gpsLocation.getLatitude(), gpsLocation.getLonguitude());
+                Uri uri = Uri.parse(url);
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                context.startActivity(intent);
+            });
         });
 
+        /*
+         Botón encargado de dar un like o eliminar like al lugar.
+         Muestra dependiendo si el usuario ha dado un like (mostrará un icono de una estrella) o si se lo ha eliminado
+         o no ha vatado, aparecerá el icono del dedito para arriba.
+         */
         holder.btnLike.setOnClickListener(v -> {
             VoteRequestDto voteRequestDto = new VoteRequestDto();
             voteRequestDto.setPlaceId(placeData.getId());
@@ -108,10 +115,11 @@ public class AdapterPlaces extends RecyclerView.Adapter<AdapterPlaces.ViewHolder
             holder.btnLike.setImageResource(R.drawable.me_gusta);
         }
 
-        if(menuOption == OPTION_FAVORITE){
+        //Si el usuario consulta el listado de favoritos, se ocultará el icono de votar
+        if (menuOption == OPTION_FAVORITE) {
             holder.btnLike.setVisibility(View.INVISIBLE);
         }
-        if(menuOption == OPTION_LIST){
+        if (menuOption == OPTION_LIST) {
             holder.btnLike.setVisibility(View.VISIBLE);
         }
 

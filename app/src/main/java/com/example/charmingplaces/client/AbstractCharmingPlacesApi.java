@@ -16,16 +16,30 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AbstractCharmingPlacesApi {
+/**
+ * Clase abstracta con la lógica común para todas las clases que se comunican con la Api
+ */
+public abstract class AbstractCharmingPlacesApi {
 
     protected Context context;
+    protected static final String URL_BASE = "http://192.168.1.104:8080";
 
+    //Método constructor
     public AbstractCharmingPlacesApi(Context context) {
         this.context = context;
     }
 
 
-    protected void executeCall(int method, String url, JSONObject request, Response.Listener<JSONObject> success, Response.ErrorListener errorCallback) {
+    /**
+     * Método para hacer llamadas genéricas a la Api (POST,PUT,DELETE,GET), que se encarga de añadir a las cabeceras el id del usuario
+     *
+     * @param method tipo de petición (POST,PUT,DELETE,GET)
+     * @param url endpoint del microservicio
+     * @param request la información que el usuario manda al microservicio
+     * @param successCallback la función que se ejecutará si la petición es exitosa
+     * @param errorCallback la función que se ejecutará si la petición da error
+     */
+    protected void executeCall(int method, String url, JSONObject request, Response.Listener<JSONObject> successCallback, Response.ErrorListener errorCallback) {
 
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
@@ -33,7 +47,7 @@ public class AbstractCharmingPlacesApi {
                 method,
                 url,
                 request,
-                success,
+                successCallback,
                 errorCallback) {
             @Override
             public Map<String, String> getHeaders() {
@@ -48,35 +62,10 @@ public class AbstractCharmingPlacesApi {
 
     }
 
-    @Deprecated
-    protected void executeCallOld(int method, String url, JSONObject request, Response.Listener<JSONObject> success, Response.ErrorListener errorCallback) {
-
-        FirebaseAuth.getInstance().getCurrentUser()
-                .getIdToken(true)
-                .addOnCompleteListener(task -> {
-                    String token = "Bearer " + task.getResult().getToken();
-                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                            method,
-                            url,
-                            request,
-                            success,
-                            errorCallback) {
-                        @Override
-                        public Map<String, String> getHeaders() {
-                            Map<String, String> headers = new HashMap<>();
-                            headers.put("Authorization", token);
-                            return headers;
-                        }
-                    };
-
-                    // Esto añade la request que enviamos hacia el controller a una cola de peticiones y la manda cuando tenga disponibilidad
-                    RequestQueue.getInstance(context).addToRequestQueue(jsonObjectRequest);
-                });
-    }
-
     /**
      * Convierte mi objeto e un JSON para enviarlo al micro
      *
+     * @param data Objeto Java a convertir en JSON
      * @return objeto con los datos a convertir en JSON
      */
     protected JSONObject objectToJSON(Object data) {
@@ -92,8 +81,10 @@ public class AbstractCharmingPlacesApi {
     }
 
     /**
-     * Convierte mi objeto e un JSON para enviarlo al micro
+     * Convierte mi JSON a Objeto java que le pase como parámetro
      *
+     * @param json El JSON a convertir en Objeto de Java
+     * @param clazz el tipo de clase Java a la que voy a convertir el JSON
      * @return objeto con los datos a convertir en JSON
      */
     protected <T> T jsonToObject(JSONObject json, Type clazz) {
@@ -106,4 +97,6 @@ public class AbstractCharmingPlacesApi {
             return null;
         }
     }
+
+    public abstract String getEndpointPath(String path);
 }

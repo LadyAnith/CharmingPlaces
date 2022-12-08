@@ -16,20 +16,33 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 
+/**
+ * Api encargada de hacer peticiones al Backend referida a los votos del usuario
+ */
 public class VotesApi extends AbstractCharmingPlacesApi{
 
+    //Constructor
     public VotesApi(Context context){
         super(context);
     }
 
+    @Override
+    public String getEndpointPath(String path) {
+        return URL_BASE + ENDPOINT_PATH + path;
+    }
 
-    private static final String URL_BASE = "http://192.168.1.104:8080/votes";
+    private static final String ENDPOINT_PATH = "/votes";
     private static final String POST_UP_VOTE_ENDPOINT = "/upVote";
     private static final String POST_DOWN_VOTE_ENDPOINT = "/downVote";
 
-
+    /**
+     * Método encarga de añadir un nuevo voto al lugar.
+     *
+     * @param data contiene el id del usuario y el id del lugar que está votando
+     * @param successCallback accion que ejecuta si la respuesta es Ok, el callback tiene la información del lugar votado actualizado
+     */
     public void addVote(VoteRequestDto data, Response.Listener<PlacesDto> successCallback) {
-        String url = URL_BASE + POST_UP_VOTE_ENDPOINT;
+        String url = getEndpointPath(POST_UP_VOTE_ENDPOINT);
         //Convierto el objeto VoteRequestDto a formato JSON
         JSONObject request = objectToJSON(data);
 
@@ -41,8 +54,14 @@ public class VotesApi extends AbstractCharmingPlacesApi{
 
     }
 
+    /**
+     * Método encargado de eliminar un voto
+     *
+     * @param data contiene el id del usuario y el id del lugar que está quitando el voto
+     * @param successCallback accion que ejecuta si la respuesta es Ok, el callback tiene la información del lugar votado actualizado
+     */
     public void deleteVote(VoteRequestDto data, Response.Listener<PlacesDto> successCallback) {
-        String url = URL_BASE + POST_DOWN_VOTE_ENDPOINT;
+        String url = getEndpointPath(POST_DOWN_VOTE_ENDPOINT);
         //Convierto el objeto VoteRequestDto a formato JSON
         JSONObject request = objectToJSON(data);
 

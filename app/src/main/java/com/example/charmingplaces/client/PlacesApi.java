@@ -22,14 +22,21 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Api encargada de hacer peticiones al Backend referida a los lugares de interés
+ */
 public class PlacesApi extends AbstractCharmingPlacesApi{
 
     public PlacesApi(Context context){
         super(context);
     }
 
+    @Override
+    public String getEndpointPath(String path) {
+        return URL_BASE + ENDPOINT_PATH + path;
+    }
 
-    private static final String URL_BASE = "http://192.168.1.104:8080/places";
+    private static final String ENDPOINT_PATH = "/places";
     private static final String GET_PLACES_NEAR_ENDPOINT = "/findNear?xcoord=%s&ycoord=%s";
     private static final String GET_PLACES_AREA_ENDPOINT = "/placesInsideArea";
     private static final String GET_FAVORITE_PLACES_ENDPOINT = "/findFavorites";
@@ -43,7 +50,7 @@ public class PlacesApi extends AbstractCharmingPlacesApi{
      * @param errorCallback qué función ejecutar si hay un error al insertar el lugar de interés
      */
     public void createInterestingPoint(PhotoCreatePlaceRequestDto data, Response.Listener<Void> successCallback, Response.ErrorListener errorCallback) {
-        String url = URL_BASE;
+        String url = getEndpointPath("");
         //Convierto el objeto PhotoCreatePlaceRequestDto a formato JSON
         JSONObject request = objectToJSON(data);
 
@@ -54,9 +61,8 @@ public class PlacesApi extends AbstractCharmingPlacesApi{
     }
 
 
-
     /**
-     * Busca puntos de interés cercanos
+     * Busca lugares de interés cercanos a la ubicación del usuario
      *
      * @param data Coordenadas para buscar lugares cercanos a ellas
      * @param successCallback qué función ejecutar si va OK
@@ -78,8 +84,15 @@ public class PlacesApi extends AbstractCharmingPlacesApi{
 
     }
 
+    /**
+     * Busca lugares de interés dentro de un área
+     *
+     * @param data contiene los puntos de un área, el superior izquierdo y el inferior derecho
+     * @param successCallback qué función ejecutar si va OK
+     * @param errorCallback qué función ejecutar si hay un error al cargar los lugares de interés en un área
+     */
     public void findPlacesInsideArea(PlacesInsideAreaRequestDto data, Response.Listener<PlacesListResponseDto> successCallback, Response.ErrorListener errorCallback) {
-        String url = URL_BASE + GET_PLACES_AREA_ENDPOINT;
+        String url = getEndpointPath(GET_PLACES_AREA_ENDPOINT);
         //Convierto el objeto PlacesInsideAreaRequestDto a formato JSON
         JSONObject request = objectToJSON(data);
 
@@ -90,8 +103,14 @@ public class PlacesApi extends AbstractCharmingPlacesApi{
         executeCall(Request.Method.POST, url, request, success,  errorCallback);
     }
 
+    /**
+     * Busca el listado completo de todos los lugares de interés
+     *
+     * @param successCallback qué función ejecutar si va bien
+     * @param errorCallback qué función ejecutar si hay un error al cargar el listado de los lugares de interés
+     */
     public void findAll(Response.Listener<PlacesListResponseDto> successCallback, Response.ErrorListener errorCallback) {
-        String urlBase = URL_BASE;
+        String urlBase = getEndpointPath("");
 
         //Indicamos el tipo de respuesta para convertir desde el micro a un objeto que podamos manejar
         Type typeList = new TypeToken<PlacesListResponseDto>() {}.getType();
@@ -105,8 +124,14 @@ public class PlacesApi extends AbstractCharmingPlacesApi{
 
     }
 
+    /**
+     * Busca el listado de los lugares de interés favoritos del usuario
+     *
+     * @param successCallback qué función ejecutar si va bien
+     * @param errorCallback qué función ejecutar si hay un error al cargar el listado de los lugares favoritos del usuario
+     */
     public void findFavorites(Response.Listener<PlacesListResponseDto> successCallback, Response.ErrorListener errorCallback) {
-        String urlBase = URL_BASE + GET_FAVORITE_PLACES_ENDPOINT;
+        String urlBase = getEndpointPath(GET_FAVORITE_PLACES_ENDPOINT);
 
         //Indicamos el tipo de respuesta para convertir desde el micro a un objeto que podamos manejar
         Type typeList = new TypeToken<PlacesListResponseDto>() {}.getType();
